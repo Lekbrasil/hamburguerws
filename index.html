@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BurgerNow - Seu Hambúrguer Favorito, Entregue!</title>
+    <!-- Inclui o CDN do Tailwind CSS para fácil estilização -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Define a fonte Inter como padrão para todo o corpo do documento */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Estilos adicionais para sobreposição do modal */
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.7); /* Fundo escurecido */
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Cabeçalho (Navegação) -->
+    <header class="bg-white shadow-md py-4 px-6 md:px-12 flex items-center justify-between sticky top-0 z-50 rounded-b-lg">
+        <!-- Logo do aplicativo -->
+        <div class="flex items-center space-x-2">
+            <svg class="w-8 h-8 text-red-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 4a1 1 0 011-1h12a1 1 0 011 1v8a1 1 0 01-1 1H4a1 1 0 01-1-1V8zm5 3a1 1 0 100 2h4a1 1 0 100-2H8z" clip-rule="evenodd"></path>
+            </svg>
+            <h1 class="text-2xl font-bold text-gray-900">BurgerNow</h1>
+        </div>
+        <!-- Botão de menu para telas pequenas (exibido apenas em mobile) -->
+        <button id="menu-button" class="md:hidden p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+        <!-- Links de navegação (ocultos em mobile por padrão, exibidos com o botão de menu) -->
+        <nav id="navbar-links" class="hidden md:flex flex-col md:flex-row md:space-x-8 mt-4 md:mt-0 items-center">
+            <a href="#" class="text-gray-700 hover:text-red-600 font-medium py-2">Início</a>
+            <a href="#menu" class="text-gray-700 hover:text-red-600 font-medium py-2">Cardápio</a>
+            <a href="#testimonials" class="text-gray-700 hover:text-red-600 font-medium py-2">Depoimentos</a>
+            <a href="#contact" class="bg-red-600 text-white px-4 py-2 rounded-full shadow-md hover:bg-red-700 transition duration-300">Peça Agora</a>
+        </nav>
+    </header>
+
+    <!-- Menu de navegação responsivo para mobile -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg py-4 px-6 rounded-b-lg">
+        <nav class="flex flex-col space-y-4 items-center">
+            <a href="#" class="text-gray-700 hover:text-red-600 font-medium py-2 w-full text-center">Início</a>
+            <a href="#menu" class="text-gray-700 hover:text-red-600 font-medium py-2 w-full text-center">Cardápio</a>
+            <a href="#testimonials" class="text-gray-700 hover:text-red-600 font-medium py-2 w-full text-center">Depoimentos</a>
+            <a href="#contact" class="bg-red-600 text-white px-4 py-2 rounded-full shadow-md hover:bg-red-700 transition duration-300 w-full text-center">Peça Agora</a>
+        </nav>
+    </div>
+
+    <!-- Seção Hero (Banner Principal) -->
+    <section class="relative bg-gradient-to-r from-red-600 to-red-800 text-white py-16 md:py-24 overflow-hidden rounded-b-lg shadow-inner">
+        <!-- Imagem de fundo estilizada com um placeholder -->
+        <img src="https://placehold.co/1920x800/FFA07A/FFFFFF?text=Seu%20Hamburguer%20Aqui" 
+             alt="Hambúrguer delicioso" 
+             class="absolute inset-0 w-full h-full object-cover opacity-30">
+        
+        <div class="container mx-auto px-6 md:px-12 relative z-10 text-center">
+            <h2 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">O Melhor Sabor, Entregue na Sua Porta!</h2>
+            <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+                Sabores irresistíveis, ingredientes frescos e entrega rápida. 
+                Peça seu hambúrguer favorito agora e receba a felicidade em casa!
+            </p>
+            <button id="order-hero-button" class="bg-white text-red-600 font-bold px-8 py-4 rounded-full text-xl shadow-lg hover:bg-gray-100 transform hover:scale-105 transition duration-300">
+                Ver Cardápio
+            </button>
+        </div>
+    </section>
+
+    <!-- Seção do Cardápio -->
+    <section id="menu" class="py-16 md:py-24 bg-gray-50">
+        <div class="container mx-auto px-6 md:px-12">
+            <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-12">Nosso Cardápio Delicioso</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Item do Cardápio 1 -->
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
+                    <img src="https://placehold.co/600x400/FFD700/FFFFFF?text=Classic%20Burger" 
+                         alt="Classic Burger" 
+                         class="w-full h-48 object-cover rounded-t-xl">
+                    <div class="p-6 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Classic Cheddar</h3>
+                            <p class="text-gray-600 mb-4">Pão brioche, hambúrguer de 180g, queijo cheddar, bacon crocante, cebola caramelizada e molho especial da casa.</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
+                            <span class="text-3xl font-extrabold text-red-600">R$ 29,90</span>
+                            <button data-item="Classic Cheddar" data-price="29.90" class="add-to-cart-button bg-red-600 text-white px-6 py-2 rounded-full shadow-md hover:bg-red-700 transition duration-300 flex items-center space-x-2">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3 1a1 1 0 000 2h.01a.99.99 0 000-2H3zm2 0a1 1 0 000 2h.01a.99.99 0 000-2H5zm10 0a1 1 0 000 2h.01a.99.99 0 000-2H15zm-2 0a1 1 0 000 2h.01a.99.99 0 000-2H13zm-2 0a1 1 0 000 2h.01a.99.99 0 000-2H11zM7 7a1 1 0 00-2 0v6a1 1 0 102 0V7zm6 0a1 1 0 00-2 0v6a1 1 0 102 0V7z"></path>
+                                    <path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM5.385 5.06a.5.5 0 01.121-.353l3.535-3.536a.5.5 0 01.707 0l3.536 3.536a.5.5 0 01.12.353v.005L12 8l-2 2-2-2z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span>Adicionar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item do Cardápio 2 -->
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
+                    <img src="https://placehold.co/600x400/87CEEB/FFFFFF?text=Veggie%20Burger" 
+                         alt="Veggie Burger" 
+                         class="w-full h-48 object-cover rounded-t-xl">
+                    <div class="p-6 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Veggie Delícia</h3>
+                            <p class="text-gray-600 mb-4">Pão integral, hambúrguer de grão de bico, queijo prato, alface fresca, tomate e maionese de manjericão.</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
+                            <span class="text-3xl font-extrabold text-red-600">R$ 26,90</span>
+                            <button data-item="Veggie Delícia" data-price="26.90" class="add-to-cart-button bg-red-600 text-white px-6 py-2 rounded-full shadow-md hover:bg-red-700 transition duration-300 flex items-center space-x-2">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3 1a1 1 0 000 2h.01a.99.99 0 000-2H3zm2 0a1 1 0 000 2h.01a.99.99 0 000-2H5zm10 0a1 1 0 000 2h.01a.99.99 0 000-2H15zm-2 0a1 1 0 000 2h.01a.99.99 0 000-2H13zm-2 0a1 1 0 000 2h.01a.99.99 0 000-2H11zM7 7a1 1 0 00-2 0v6a1 1 0 102 0V7zm6 0a1 1 0 00-2 0v6a1 1 0 102 0V7z"></path>
+                                    <path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM5.385 5.06a.5.5 0 01.121-.353l3.535-3.536a.5.5 0 01.707 0l3.536 3.536a.5.5 0 01.12.353v.005L12 8l-2 2-2-2z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span>Adicionar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item do Cardápio 3 -->
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
+                    <img src="https://placehold.co/600x400/A2D2FF/FFFFFF?text=Chicken%20Burger" 
+                         alt="Chicken Burger" 
+                         class="w-full h-48 object-cover rounded-t-xl">
+                    <div class="p-6 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Chicken Crispy</h3>
+                            <p class="text-gray-600 mb-4">Pão de gergelim, filé de frango empanado e crocante, queijo suíço, alface e molho honey mustard.</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
+                            <span class="text-3xl font-extrabold text-red-600">R$ 28,50</span>
+                            <button data-item="Chicken Crispy" data-price="28.50" class="add-to-cart-button bg-red-600 text-white px-6 py-2 rounded-full shadow-md hover:bg-red-700 transition duration-300 flex items-center space-x-2">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3 1a1 1 0 000 2h.01a.99.99 0 000-2H3zm2 0a1 1 0 000 2h.01a.99.99 0 000-2H5zm10 0a1 1 0 000 2h.01a.99.99 0 000-2H15zm-2 0a1 1 0 000 2h.01a.99.99 0 000-2H13zm-2 0a1 1 0 000 2h.01a.99.99 0 000-2H11zM7 7a1 1 0 00-2 0v6a1 1 0 102 0V7zm6 0a1 1 0 00-2 0v6a1 1 0 102 0V7z"></path>
+                                    <path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM5.385 5.06a.5.5 0 01.121-.353l3.535-3.536a.5.5 0 01.707 0l3.536 3.536a.5.5 0 01.12.353v.005L12 8l-2 2-2-2z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span>Adicionar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item do Cardápio 4 -->
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
+                    <img src="https://placehold.co/600x400/98FB98/FFFFFF?text=Double%20Burger" 
+                         alt="Double Burger" 
+                         class="w-full h-48 object-cover rounded-t-xl">
+                    <div class="p-6 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Double Master</h3>
+                            <p class="text-gray-600 mb-4">Pão brioche, dois hambúrgueres de 180g, queijo duplo, picles, cebola roxa e molho barbecue defumado.</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
+                            <span class="text-3xl font-extrabold text-red-600">R$ 38,90</span>
+                            <button data-item="Double Master" data-price="38.90" class="add-to-cart-button bg-red-600 text-white px-6 py-2 rounded-full shadow-md hover:bg-red-700 transition duration-300 flex items-center space-x-2">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3 1a1 1 0 000 2h.01a.99.99 0 000-2H3zm2 0a1 1 0 000 2h.01a.99.99 0 000-2H5zm10 0a1 1 0 000 2h.01a.99.99 0 000-2H15zm-2 0a1 1 0 000 2h.01a.99.99 0 000-2H13zm-2 0a1 1 0 000 2h.01a.99.99 0 000-2H11zM7 7a1 1 0 00-2 0v6a1 1 0 102 0V7zm6 0a1 1 0 00-2 0v6a1 1 0 102 0V7z"></path>
+                                    <path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM5.385 5.06a.5.5 0 01.121-.353l3.535-3.536a.5.5 0 01.707 0l3.536 3.536a.5.5 0 01.12.353v.005L12 8l-2 2-2-2z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span>Adicionar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item do Cardápio 5 -->
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
+                    <img src="https://placehold.co/600x400/ADD8E6/FFFFFF?text=Fries" 
+                         alt="Fries" 
+                         class="w-full h-48 object-cover rounded-t-xl">
+                    <div class="p-6 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Batata Frita Crocante</h3>
+                            <p class="text-gray-600 mb-4">Porção generosa de batatas fritas crocantes e sequinhas. Ideal para acompanhar seu hambúrguer.</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
+                            <span class="text-3xl font-extrabold text-red-600">R$ 12,00</span>
+                            <button data-item="Batata Frita Crocante" data-price="12.00" class="add-to-cart-button bg-red-600 text-white px-6 py-2 rounded-full shadow-md hover:bg-red-700 transition duration-300 flex items-center space-x-2">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3 1a1 1 0 000 2h.01a.99.99 0 000-2H3zm2 0a1 1 0 000 2h.01a.99.99 0 000-2H5zm10 0a1 1 0 000 2h.01a.99.99 0 000-2H15zm-2 0a1 1 0 000 2h.01a.99.99 0 000-2H13zm-2 0a1 1 0 000 2h.01a.99.99 0 000-2H11zM7 7a1 1 0 00-2 0v6a1 1 0 102 0V7zm6 0a1 1 0 00-2 0v6a1 1 0 102 0V7z"></path>
+                                    <path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM5.385 5.06a.5.5 0 01.121-.353l3.535-3.536a.5.5 0 01.707 0l3.536 3.536a.5.5 0 01.12.353v.005L12 8l-2 2-2-2z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span>Adicionar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item do Cardápio 6 -->
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
+                    <img src="https://placehold.co/600x400/90EE90/FFFFFF?text=Milkshake" 
+                         alt="Milkshake" 
+                         class="w-full h-48 object-cover rounded-t-xl">
+                    <div class="p-6 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Milkshake de Chocolate</h3>
+                            <p class="text-gray-600 mb-4">Delicioso e cremoso milkshake de chocolate, perfeito para adoçar seu dia.</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
+                            <span class="text-3xl font-extrabold text-red-600">R$ 18,00</span>
+                            <button data-item="Milkshake de Chocolate" data-price="18.00" class="add-to-cart-button bg-red-600 text-white px-6 py-2 rounded-full shadow-md hover:bg-red-700 transition duration-300 flex items-center space-x-2">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3 1a1 1 0 000 2h.01a.99.99 0 000-2H3zm2 0a1 1 0 000 2h.01a.99.99 0 000-2H5zm10 0a1 1 0 000 2h.01a.99.99 0 000-2H15zm-2 0a1 1 0 000 2h.01a.99.99 0 000-2H13zm-2 0a1 1 0 000 2h.01a.99.99 0 000-2H11zM7 7a1 1 0 00-2 0v6a1 1 0 102 0V7zm6 0a1 1 0 00-2 0v6a1 1 0 102 0V7z"></path>
+                                    <path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM5.385 5.06a.5.5 0 01.121-.353l3.535-3.536a.5.5 0 01.707 0l3.536 3.536a.5.5 0 01.12.353v.005L12 8l-2 2-2-2z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span>Adicionar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Depoimentos -->
+    <section id="testimonials" class="bg-red-700 text-white py-16 md:py-24 rounded-t-lg shadow-inner">
+        <div class="container mx-auto px-6 md:px-12 text-center">
+            <h2 class="text-4xl font-extrabold mb-12">O Que Nossos Clientes Dizem</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Depoimento 1 -->
+                <div class="bg-red-800 p-8 rounded-xl shadow-lg border border-red-600">
+                    <p class="text-lg italic mb-4">"Os hambúrgueres do BurgerNow são simplesmente os melhores! A entrega é super rápida e a qualidade é impecável. Virou meu lugar favorito!"</p>
+                    <p class="font-bold text-red-200">- Ana Clara</p>
+                </div>
+                <!-- Depoimento 2 -->
+                <div class="bg-red-800 p-8 rounded-xl shadow-lg border border-red-600">
+                    <p class="text-lg italic mb-4">"Fiquei impressionado com o sabor e a variedade. O Veggie Delícia é espetacular! Recomendo a todos que procuram um lanche de alta qualidade."</p>
+                    <p class="font-bold text-red-200">- Bruno Santana</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer id="contact" class="bg-gray-900 text-gray-300 py-12 px-6 md:px-12 rounded-t-lg">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+            <!-- Coluna 1: Informações de Contato -->
+            <div>
+                <h3 class="text-xl font-bold text-white mb-4">Contato</h3>
+                <p>Telefone: (XX) XXXX-XXXX</p>
+                <p>Email: contato@burgernow.com</p>
+                <p>Endereço: Rua dos Sabores, 123 - Cidade do Hambúrguer</p>
+            </div>
+            <!-- Coluna 2: Links Úteis -->
+            <div>
+                <h3 class="text-xl font-bold text-white mb-4">Links</h3>
+                <ul>
+                    <li><a href="#" class="hover:text-red-600">Política de Privacidade</a></li>
+                    <li><a href="#" class="hover:text-red-600">Termos de Serviço</a></li>
+                    <li><a href="#" class="hover:text-red-600">Trabalhe Conosco</a></li>
+                </ul>
+            </div>
+            <!-- Coluna 3: Redes Sociais -->
+            <div>
+                <h3 class="text-xl font-bold text-white mb-4">Siga-nos</h3>
+                <div class="flex justify-center md:justify-start space-x-4">
+                    <a href="#" class="text-gray-300 hover:text-red-600">
+                        <!-- Ícone do Facebook (SVG de exemplo) -->
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15h-2.5v-3H12V9.5c0-2.29 1.4-3.55 3.48-3.55.99 0 1.83.07 2.08.1v2.54h-1.5c-1.22 0-1.45.58-1.45 1.42V12h3l-.5 3h-2.5v6.95C18.56 20.87 22 16.84 22 12z"></path></svg>
+                    </a>
+                    <a href="#" class="text-gray-300 hover:text-red-600">
+                        <!-- Ícone do Instagram (SVG de exemplo) -->
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4c0 3.2-2.6 5.8-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8C2 4.6 4.6 2 7.8 2zm-.2 2A2.88 2.88 0 004 7.8v8.4C4 19.12 4.88 20 7.2 20h8.4c2.32 0 3.2-1.22 3.2-3.2V7.8A2.88 2.88 0 0016.2 4H7.6zm9.6 1.8A1.2 1.2 0 1017.6 7a1.2 1.2 0 000-2.4zm-4.6 3.2a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6z"></path></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="mt-8 pt-8 border-t border-gray-700 text-center text-sm">
+            &copy; 2025 BurgerNow. Todos os direitos reservados.
+        </div>
+    </footer>
+
+    <!-- Modal de Confirmação de Pedido -->
+    <div id="order-modal" class="fixed inset-0 flex items-center justify-center p-4 z-50 hidden">
+        <div class="modal-overlay absolute inset-0"></div>
+        <div class="bg-white rounded-lg p-8 shadow-2xl max-w-sm w-full relative transform scale-95 opacity-0 transition-all duration-300 ease-out">
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Item Adicionado!</h3>
+            <p class="text-gray-700 mb-6">Você adicionou <span id="modal-item-name" class="font-semibold text-red-600"></span> ao seu pedido. O preço é <span id="modal-item-price" class="font-semibold text-red-600"></span>.</p>
+            <div class="flex justify-end space-x-4">
+                <button id="close-modal-button" class="bg-gray-300 text-gray-800 px-6 py-2 rounded-full hover:bg-gray-400 transition duration-300">Fechar</button>
+                <button class="bg-red-600 text-white px-6 py-2 rounded-full shadow-md hover:bg-red-700 transition duration-300">Finalizar Pedido</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript para interatividade
+        document.addEventListener('DOMContentLoaded', () => {
+            // Referências para elementos do DOM
+            const menuButton = document.getElementById('menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const addToCartButtons = document.querySelectorAll('.add-to-cart-button');
+            const orderHeroButton = document.getElementById('order-hero-button');
+            const orderModal = document.getElementById('order-modal');
+            const closeModalButton = document.getElementById('close-modal-button');
+            const modalItemName = document.getElementById('modal-item-name');
+            const modalItemPrice = document.getElementById('modal-item-price');
+
+            /**
+             * Alterna a visibilidade do menu mobile.
+             */
+            menuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                mobileMenu.classList.toggle('flex'); // Usa flex para melhor controle do layout
+                mobileMenu.classList.toggle('flex-col'); // Garante que os links fiquem em coluna
+            });
+
+            /**
+             * Adiciona event listeners para os botões "Adicionar" dos itens do cardápio.
+             * Quando clicado, exibe um modal com as informações do item.
+             */
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const itemName = event.currentTarget.dataset.item;
+                    const itemPrice = parseFloat(event.currentTarget.dataset.price).toFixed(2).replace('.', ','); // Formata para BRL
+
+                    modalItemName.textContent = itemName;
+                    modalItemPrice.textContent = `R$ ${itemPrice}`;
+
+                    // Exibe o modal e adiciona animação
+                    orderModal.classList.remove('hidden');
+                    setTimeout(() => {
+                        orderModal.querySelector('div:nth-child(2)').classList.remove('opacity-0', 'scale-95');
+                        orderModal.querySelector('div:nth-child(2)').classList.add('opacity-100', 'scale-100');
+                    }, 10); // Pequeno atraso para a transição funcionar
+                });
+            });
+
+            /**
+             * Fecha o modal de confirmação do pedido.
+             */
+            closeModalButton.addEventListener('click', () => {
+                // Inicia a animação de saída do modal
+                orderModal.querySelector('div:nth-child(2)').classList.remove('opacity-100', 'scale-100');
+                orderModal.querySelector('div:nth-child(2)').classList.add('opacity-0', 'scale-95');
+                
+                // Oculta o modal após a transição
+                setTimeout(() => {
+                    orderModal.classList.add('hidden');
+                }, 300); // Deve corresponder à duração da transição CSS
+            });
+
+            /**
+             * Fecha o modal ao clicar fora da área do modal.
+             */
+            orderModal.addEventListener('click', (event) => {
+                if (event.target === orderModal) { // Verifica se o clique foi diretamente na sobreposição
+                    // Inicia a animação de saída do modal
+                    orderModal.querySelector('div:nth-child(2)').classList.remove('opacity-100', 'scale-100');
+                    orderModal.querySelector('div:nth-child(2)').classList.add('opacity-0', 'scale-95');
+
+                    // Oculta o modal após a transição
+                    setTimeout(() => {
+                        orderModal.classList.add('hidden');
+                    }, 300); // Deve corresponder à duração da transição CSS
+                }
+            });
+
+            /**
+             * Adiciona um evento de clique ao botão "Ver Cardápio" na seção Hero
+             * para rolar suavemente até a seção do cardápio.
+             */
+            orderHeroButton.addEventListener('click', () => {
+                const menuSection = document.getElementById('menu');
+                if (menuSection) {
+                    menuSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+
+            // Adiciona evento de clique para fechar o menu mobile ao clicar em um link
+            const navbarLinks = document.querySelectorAll('#mobile-menu a');
+            navbarLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
